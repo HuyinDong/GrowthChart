@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ <link href="./dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Test</title>
+ </head>
+ <body>
+<dl class="dl-horizontal">
+  <dt>Description lists</dt>
+  <dd>A description list is perfect for defining terms.
+</dd>
+<dt>Euismod</dt>
+  <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
+<dd>Donec id elit non mi porta gravida at eget metus.
+</dd>
+</dl>
+<form>
+<table class=" table table-hover">
+<tr>
+	<td>#</td><td>First Name</td><td>Last Name</td><td>UserName</td>
+</tr>
+<tr>
+	<td>1</td><td>Mark</td><td>Otto</td><td>@mdo</td>
+	</tr>
+	</table>
+	</form>
+ </body>
+</html>

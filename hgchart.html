@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+ <title>Off Canvas Template for Bootstrap</title>
+<link href="./bootstrap-3.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="./bootstrap-3.1.1/dist/js/bootstrap.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="http://code.highcharts.com/stock/highstock.js"></script>
+<script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
+  </head>
+
+  <body>
+<div id="container" style="height: 400px; width: 500px"></div>
+
+
+	<script>
+$(function () {
+ groupingUnits = [[
+                'week',                         // unit name
+                [1]                             // allowed multiples
+            ], [
+                'month',
+                [1, 2, 3, 4, 6]
+            ]],
+
+    $('#container').highcharts('StockChart',{
+
+       title : {
+	text : 'chart',
+	style : {
+		color : 'red',
+		fontWeight : 'bold'
+	}
+	},
+	subtitle : {
+	text : 'sub chart'
+	},
+	xAxis: {
+	    title : {
+		text : 'DelaWalle'
+		}		
+        },
+	 plotOptions: {
+    line : {
+        dataLabels: {
+            enabled: true
+        }
+    }
+},
+	tooltip : {
+	formatter : function (){
+	return 'The value of this chart is <b>'+this.x+','+this.y+'</b>';
+
+	},
+	crosshairs : [true,true]
+	},
+	legend : {
+	align: 'right',
+	verticalAlign: 'top',
+	backgroundColor: '#AABBCC',
+	borderRadius : 5,
+	x : 10,
+	y : 100
+	},
+	rangeSelector : {
+	allButtonsEnabled : true,
+	selected : 2
+
+	},
+	 series: [{
+	//	 type: 'candlestick',
+            data: [[1,1.1,1.5,1.05,1.4],[2,1.4,1.8,1.4,1.6]],
+	// dataGrouping: {
+          //          units: groupingUnits
+         //       }
+        }],
+	tickInterval :2
+    });
+});
+  
+	</script>
+    </body>
+	</html>

@@ -1,0 +1,406 @@
+<head>
+  <title>BMI_boy_2yr_20yrs</title> 
+ <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+  <style type="text/css">       
+      /*svg {
+         shape-rendering: crispEdges;
+        }
+       #stackedbudget-chart line {
+         stroke: #000;
+       }
+       */
+	   
+       .rule line {
+         stroke: #eed;
+       }
+	   
+	   /*
+       #histogram-trellis-chart rect {
+          fill: darkblue;
+          stroke: #ffd;
+       }
+       #histogram-trellis-chart line {
+          stroke: black;
+       }
+       #treemap-transition .cell {
+         border: solid 1px white;
+         font: 16px;
+         color:white;
+         line-height: 12px;
+         overflow: hidden;
+         position: absolute;
+         text-indent: 2px;
+         text-align: center;
+         vertical-align: middle;
+      }
+		*/
+
+       table { 
+         border-collapse: collapse;
+         border: 1px solid #FFFAFA; 
+       }
+       td {
+         padding: 10px; 
+       }
+  </style>
+
+
+
+</head> 
+
+<body>
+
+<center>
+<div id="paired-line-chart">
+<script type="text/javascript">
+
+d3.csv("resource/BMI_boy_2yr_20yrs.csv", function(data1) 
+{ 
+    /* Read CSV file: first row =>  year,top1,top5  */
+    var maxval = 0,
+        sampsize = 0;
+    var label_array = new Array(),
+        val_array1 = new Array();
+
+    sampsize = data1.length;
+		
+    for (var i=0; i < sampsize; i++) {
+       label_array[i] = parseInt(data1[i].Agemos);
+       val_array1[i] = { x: label_array[i], 
+                       yp3: parseFloat(data1[i].P3),
+                       yp5: parseFloat(data1[i].P5),
+                      yp10: parseFloat(data1[i].P10),
+                      yp25: parseFloat(data1[i].P25),
+                      yp50: parseFloat(data1[i].P50),
+                      yp75: parseFloat(data1[i].P75),
+                      yp85: parseFloat(data1[i].P85),
+                      yp90: parseFloat(data1[i].P90),
+                      yp95: parseFloat(data1[i].P95),
+                      yp97: parseFloat(data1[i].P97) };
+       //maxval = Math.max(maxval, parseFloat(data1[i].P50), parseFloat(data1[i].P95) );
+     }
+
+     //maxval = (1 + Math.floor(maxval / 10)) * 10;   
+
+
+   var  w = 500,
+        h = 500,
+        p = 30,
+        x = d3.scale.linear().domain([ label_array[0]/12, label_array[sampsize-1]/12 ]).range([0, w]),
+        y = d3.scale.linear().domain([12, 36]).range([h, 0]);
+        //y = d3.scale.linear().domain([0, maxval]).range([h, 0]);
+
+   var vis = d3.select("#paired-line-chart")
+       .data([val_array1])
+     .append("svg:svg")
+       .attr("width", w + p * 2)
+       .attr("height", h + p * 2)
+     .append("svg:g")
+       .attr("transform", "translate(" + p + "," + p + ")");
+
+
+   var rules = vis.selectAll("g.rule")
+      .data(x.ticks(20))
+     .enter().append("svg:g")
+       .attr("class", "rule");
+
+   // Draw grid lines
+   rules.append("svg:line")
+    .attr("x1", x)
+    .attr("x2", x)
+    .attr("y1", 0)
+    .attr("y2", h - 1);
+
+   rules.append("svg:line")
+    .attr("class", function(d) { return d ? null : "axis"; })
+    .data(y.ticks(10))
+    .attr("y1", y)
+    .attr("y2", y)
+    .attr("x1", 0)
+    .attr("x2", w - 10);
+
+   // Place axis tick labels
+   rules.append("svg:text")
+    .attr("x", x)
+    .attr("y", h + 15)
+    .attr("dy", ".71em")
+    .attr("text-anchor", "middle")
+    .text(x.tickFormat(10))
+    .text(String);
+
+   rules.append("svg:text")
+    .data(y.ticks(12))
+    .attr("y", y)
+    .attr("x", -10)
+    .attr("dy", ".35em")
+    .attr("text-anchor", "end")
+    .text(y.tickFormat(5));
+
+
+
+	
+  var arrData = [
+    [2, 20],
+    [3, 17], 
+    [4, 21]];
+	
+  var data = arrData.map(function(d) {
+      return {
+         age: d[0],
+         bmi: d[1]
+      };
+      
+  });
+
+var mykidline = d3.svg.line()
+	 .interpolate("basis")          // <=== THERE IT IS!
+    .x(function(d) { return x(d.age); })
+    .y(function(d) { return y(d.bmi); });
+
+	
+  vis.append("svg:path")
+      .datum(data)
+      .attr("class", "line") 
+         .attr("fill", "none")
+     .attr("stroke", "green")
+       .attr("d", mykidline);
+
+
+	   
+   // line 3%
+  /* vis.append("svg:path")
+       .attr("class", "line")
+       .attr("fill", "none")
+       .attr("stroke", "blue")
+       .attr("stroke-width", 2)
+       .attr("d", d3.svg.line()
+         .x(function(d) { return x(d.x / 12); })
+         .y(function(d) { return y(d.yp3); }));
+
+*/
+
+   // line 5%
+    vis.append("svg:path")
+       .attr("class", "line")
+       .attr("fill", "none")
+       .attr("stroke", "red")
+       .attr("stroke-width", 1)
+       .attr("d", d3.svg.line()
+         .x(function(d) { return x(d.x / 12); })
+         .y(function(d) { return y(d.yp5); }));
+
+    vis.append("svg:text")
+ 		.attr("transform", "translate(" + (w) + ", 350)") 
+		.attr("dy", ".35em")
+		.attr("text-anchor", "start")
+		.style("fill", "red")
+		.text("5%");
+		 
+		 
+
+   // line 25%
+   vis.append("svg:path")
+       .attr("class", "line")
+       .attr("fill", "none")
+       .attr("stroke", "#00ff00")
+       .attr("stroke-width", 1)
+       .attr("d", d3.svg.line()
+         .x(function(d) { return x(d.x / 12 ); })
+         .y(function(d) { return y(d.yp25); }));
+
+	vis.append("svg:text")
+ 		.attr("transform", "translate(" + (w) + ", 310)") 
+		.attr("dy", ".35em")
+		.attr("text-anchor", "start")
+		.style("fill", "#00ff00")
+		.text("25%");
+
+   // line 50%
+   vis.append("svg:path")
+       .attr("class", "line")
+       .attr("fill", "none")
+       .attr("stroke", "darkblue")
+       .attr("stroke-width", 2)
+       .attr("d", d3.svg.line()
+         .x(function(d) { return x(d.x / 12 ); })
+         .y(function(d) { return y(d.yp50); })) ;
+
+	vis.append("svg:text")
+ 		.attr("transform", "translate(" + (w) + ", 270)") 
+		.attr("dy", ".35em")
+		.attr("text-anchor", "start")
+		.style("fill", "darkblue")
+		.text("50%");
+
+
+   // line 75%
+   vis.append("svg:path")
+       .attr("class", "line")
+       .attr("fill", "none")
+       .attr("stroke", "#00ff00")
+       .attr("stroke-width", 1)
+       .attr("d", d3.svg.line()
+         .x(function(d) { return x(d.x / 12 ); })
+         .y(function(d) { return y(d.yp75); }));
+
+	vis.append("svg:text")
+ 		.attr("transform", "translate(" + (w) + ", 215)") 
+		.attr("dy", ".35em")
+		.attr("text-anchor", "start")
+		.style("fill", "#00ff00")
+		.text("75%");		 
+
+   // line 85%
+   vis.append("svg:path")
+       .attr("class", "line")
+       .attr("fill", "none")
+       .attr("stroke", "#cc6633")
+       .attr("stroke-width", 1)
+       .attr("d", d3.svg.line()
+         .x(function(d) { return x(d.x / 12 ); })
+         .y(function(d) { return y(d.yp85); }));
+
+	vis.append("svg:text")
+ 		.attr("transform", "translate(" + (w) + ", 185)") 
+		.attr("dy", ".35em")
+		.attr("text-anchor", "start")
+		.style("fill", "#cc6633")
+		.text("85%");		
+		 /*
+   vis.select("circle.line")
+       .data(val_array1)
+     .enter().append("svg:circle")
+       .attr("class", "line")
+       .attr("fill", "darkblue" )
+       .attr("cx", function(d) { return x(d.x); })
+       .attr("cy", function(d) { return y(d.yp85); })
+       .attr("r", 1);
+	*/
+
+
+   // line 90%
+   vis.append("svg:path")
+       .attr("class", "line")
+       .attr("fill", "none")
+       .attr("stroke", "#660000")
+       .attr("stroke-width", 1)
+       .attr("d", d3.svg.line()
+         .x(function(d) { return x(d.x / 12 ); })
+         .y(function(d) { return y(d.yp90); }));
+		 
+	vis.append("svg:text")
+ 		.attr("transform", "translate(" + (w) + ", 160)") 
+		.attr("dy", ".35em")
+		.attr("text-anchor", "start")
+		.style("fill", "#660000")
+		.text("90%");	
+	/*
+   vis.select("circle.line")
+       .data(val_array1)
+     .enter().append("svg:circle")
+       .attr("class", "line")
+       .attr("fill", "darkblue" )
+       .attr("cx", function(d) { return x(d.x); })
+       .attr("cy", function(d) { return y(d.yp90); })
+       .attr("r", 1);
+	*/
+
+   // line 95%
+   vis.append("svg:path")
+       .attr("class", "line")
+       .attr("fill", "none")
+       .attr("stroke", "red")
+       .attr("stroke-width", 1)
+       .attr("d", d3.svg.line()
+         .x(function(d) { return x(d.x / 12 ); })
+         .y(function(d) { return y(d.yp95); }));
+
+	vis.append("svg:text")
+ 		.attr("transform", "translate(" + (w) + ", 115)") 
+		.attr("dy", ".35em")
+		.attr("text-anchor", "start")
+		.style("fill", "red")
+		.text("95%");
+
+		/*
+   vis.select("circle.line")
+       .data(val_array1)
+     .enter().append("svg:circle")
+       .attr("class", "line")
+       .attr("fill", "darkblue" )
+       .attr("cx", function(d) { return x(d.x); })
+       .attr("cy", function(d) { return y(d.yp95); })
+       .attr("r", 1);
+	*/
+
+   // line 97%
+/*
+   vis.append("svg:path")
+       .attr("class", "line")
+       .attr("fill", "none")
+       .attr("stroke", "darkblue")
+       .attr("stroke-width", 1)
+       .attr("d", d3.svg.line()
+         .x(function(d) { return x(d.x / 12 ); })
+         .y(function(d) { return y(d.yp97); }));
+
+	
+   vis.select("circle.line")
+       .data(val_array1)
+     .enter().append("svg:circle")
+       .attr("class", "line")
+       .attr("fill", "darkblue" )
+       .attr("cx", function(d) { return x(d.x); })
+       .attr("cy", function(d) { return y(d.yp97); })
+       .attr("r", 1);
+
+	*/
+
+
+
+
+   // -----------------------------
+   // Add Title then Legend
+   // -----------------------------
+   vis.append("svg:text")
+       .attr("x", w/4)
+       .attr("y", 20)
+       .text("Body mass index-for-age percentiles: Boys, 2 to 20 years");
+
+   vis.append("svg:rect")
+       .attr("x", w/2 - 20)
+       .attr("y", 50)
+       .attr("stroke", "darkblue")
+       .attr("height", 2)
+       .attr("width", 40);
+
+   vis.append("svg:text")
+       .attr("x", 30 + w/2)
+       .attr("y", 55)
+       .text("50th Percentile");
+
+   vis.append("svg:rect")
+       .attr("x", w/2 - 20)
+       .attr("y", 80)
+       .attr("stroke", "maroon")
+       .attr("height", 2)
+       .attr("width", 40);
+
+   vis.append("svg:text")
+       .attr("x", 30 + w/2)
+       .attr("y", 85)
+       .text("3rd Percentile");
+
+	vis.append("text")
+	.attr("text-anchor", "middle")  
+    .attr("x", 500)
+    .attr("y", 500)
+	.text("Age");
+
+}); 
+
+</script>
+<br/>
+</div>
+</center>

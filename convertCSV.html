@@ -1,0 +1,39 @@
+<!DOCTYPE>
+<html>
+<head>
+
+</head>
+<body>
+
+
+<script src = ./PapaParse-4.1.0/papaparse.min.js></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script>
+
+
+$(function(){
+var obj = [];
+alert("OK");
+ Papa.parse('bmi/resource/BMI_boy_2yr_20yrs.csv', {
+	download: true,
+	complete : function(results){
+	var ohlc = [];
+	var volume = [];
+	var dataLength = results.data.length;
+	var i = 0;
+	alert(results.data[0].P3);
+	console.log(results.data);
+
+	
+	
+
+	
+}
+});
+
+});
+
+</script>
+</body>
+</html>

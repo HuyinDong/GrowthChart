@@ -1,0 +1,107 @@
+<!DOCTYPE>
+<html>
+<head>
+
+</head>
+<body>
+<div id="container" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">p</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="http://code.highcharts.com/stock/highstock.js"></script>
+<script src="http://code.highcharts.com/stock/highcharts-more.js"></script>
+<script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
+<script>
+$(function () {
+    $.getJSON('convertcsv.json', function (data) {
+
+        // split the data set into ohlc and volume
+        var ohlc = [],
+            volume = [],
+            dataLength = data.length,
+            // set the allowed units for data grouping
+            groupingUnits = [[
+                'week',                         // unit name
+                [1]                             // allowed multiples
+            ], [
+                'month',
+                [1, 2, 3, 4, 6]
+            ]],
+	 i = 0;
+	i = dataLength - 1;
+	alert(i);
+        for ( i; i >=0; i -= 1) {
+	var dateObj = data[i].Date.split("-");
+	var str = dateObj[0]+","+dateObj[1]+","+dateObj[2];
+	var d = Date.parse(str); 
+
+            ohlc.push([
+                d, // the date
+                data[i].Open, // open
+                data[i].High, // high
+                data[i].Low, // low
+                data[i].Close // close
+            ]);
+
+            volume.push([
+                d, // the date
+                data[i].Volume // the volume
+            ]);
+        }
+
+	alert(ohlc);
+        // create the chart
+        $('#container').highcharts('StockChart', {
+
+            rangeSelector: {
+                selected: 1
+            },
+
+            title: {
+                text: 'AAPL Historical'
+            },
+
+            yAxis: [{
+                labels: {
+                    align: 'right',
+                    x: -3
+                },
+                title: {
+                    text: 'OHLC'
+                },
+                height: '60%',
+                lineWidth: 2
+            }, {
+                labels: {
+                    align: 'right',
+                    x: -3
+                },
+                title: {
+                    text: 'Volume'
+                },
+                top: '65%',
+                height: '35%',
+                offset: 0,
+                lineWidth: 2
+            }],
+
+            series: [{
+                type: 'candlestick',
+                name: 'AAPL',
+                data: ohlc,
+                dataGrouping: {
+                    units: groupingUnits
+                }
+            }, {
+                type: 'column',
+                name: 'Volume',
+                data: volume,
+                yAxis: 1,
+                dataGrouping: {
+                    units: groupingUnits
+                }
+            }]
+        });
+    });
+});
+</script>
+</body>
+</html>

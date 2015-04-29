@@ -1,0 +1,22 @@
+<!DOCTYPE>
+<html>
+<head>
+
+</head>
+<body>
+
+<script>
+
+
+
+
+
+
+var xhr = new XMLHttpRequest(); 
+xhr.open('GET','',false);   
+xhr.send(null);
+alert(xhr.responseText);
+</script>
+</body>
+</html>
+

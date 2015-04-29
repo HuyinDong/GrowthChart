@@ -1,0 +1,789 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Online Growth Charts</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap-3.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet"> 
+    <link href="css/ace.css" rel="stylesheet" >
+	<style>
+	 .rule line {
+         stroke: #eed;
+       }
+ table { 
+         border-collapse: collapse;
+         border: 1px solid #FFFAFA; 
+       }
+       td {
+         padding: 10px; 
+       }
+		#sign{
+	display:none;
+	padding:15px;
+	margin:5px;
+	width:280px;
+	height:300px;
+	position:absolute;
+	top:40px;
+	right:-80px;
+	background:#FFFFCC;
+	border:1px solid #3399FF;
+	line-height: 15px;
+	}
+	#profile{
+	display:none;
+	background:#004C4C;
+		}
+	</style>
+     <script type="text/javascript" src="js/ogc.js"></script>
+    <!-- script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular-resource.min.js"></script>    
+	<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+    <script type="text/javascript" src="js/public/hello.js"></script -->
+	
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom styles for this template -->
+    <link href="css/carousel.css" rel="stylesheet">
+    <link href="css/datepicker3.css" rel="stylesheet">
+		
+	
+		<script src="https://apis.google.com/js/client:platform.js" async defer></script>	
+		<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+		<script src="bootstrap-3.1.1/dist/js/bootstrap.min.js"></script>
+			<script type="text/javascript" src="js/highcharts.js"></script>
+		<script src = "js/bootstrap-datepicker.js"></script>
+ </head>	
+
+ 
+<!-- NAVBAR
+================================================== -->
+<body>
+    
+	<div class="navbar-wrapper">
+	<div class="container">
+		<div class="navbar-container" id="navbar-container">
+		<!--div class="  navbar-container navbar-inverse navbar-fixed-top" role="navigation" --> 
+
+			<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler">
+				<span class="sr-only">Toggle sidebar</span>
+
+				<span class="icon-bar"></span>
+
+				<span class="icon-bar"></span>
+
+				<span class="icon-bar"></span>
+			</button>
+
+			 
+
+			<div class="navbar-buttons navbar-header pull-right" role="navigation">
+				<ul class="nav ace-nav">
+					<li class="green">
+						<a  href="#">
+							<i class="fa fa-child fa-2x  "></i> 
+							<span class="user-info">
+								<big>Infants and Babies </big>
+								<small> 0 ~ 36 months</small>
+							</span>
+						</a>
+					</li>
+
+					<li class="blue">
+						<a href="#">
+							<i class="fa fa-male fa-2x  "></i> 
+							<span class="user-info">
+								<big>Children  and Teens  </big>
+								<small> 2 ~ 20 years</small>
+							</span>
+						</a>
+					</li>
+
+					<li class="purple">
+						<a href="#">
+							<i class="ace-icon fa fa-envelope"></i>
+							<big> Contact  </big>
+						</a>
+
+					</li>
+
+					<li class="light-blue" id="toin">
+						<a href="#">
+							<i class="ace-icon fa fa-user"></i>
+							<big> Sign In </big>
+						</a>
+						<div id="sign">
+<form>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"> Check me out
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-2 col-md-offset-4"><button type="submit" class="btn btn-success btn-sm">Submit</button></div>
+</div>
+  <hr>
+
+  <div class="form-group">
+ <div id="gConnect">
+    <button class="g-signin"
+        data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email"
+        data-requestvisibleactions="http://schemas.google.com/AddActivity"
+        data-clientId="526876616106-0vs3d4u7hk68guk0lcdou385j1f8p24b.apps.googleusercontent.com"
+        data-callback="onSignInCallback"
+        data-theme="dark"
+        data-cookiepolicy="single_host_origin">
+    </button>
+  </div>
+    
+    </div>
+</form>
+
+					</li>
+					<li class="light-blue" id="profile">
+						
+
+					</li>
+						<li class="red"  >
+						<a id="disconnect" href="#" >
+							<i class="ace-icon fa fa-lock"></i>
+					</li>
+				</ul>
+			</div>
+		</div><!-- /.navbar-container -->
+	</div>
+</div>
+<div id="profile">
+
+</div>
+<!-- Carousel
+================================================== -->
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+   
+	  <ol class="carousel-indicators" style="padding: 0px 20px 0px 20px;">
+		<li data-target="#myCarousel" data-slide-to="0" class="active pull-left"></li>
+		<li data-target="#myCarousel" data-slide-to="1" class="pull-left"></li>
+		<li data-target="#myCarousel" data-slide-to="2" class="pull-left"></li>
+	  </ol>
+   
+  <div class="carousel-inner">
+    <div class="item active">
+      <img src="images/091_500.JPG" class="img-responsive">
+      <div class="container">
+        <div class="carousel-caption">
+          <h1>Share Charts with Family!  </h1>
+           </div>
+      </div>
+    </div>
+    <div class="item">
+      <img src="images/124_500.JPG" class="img-responsive">
+      <div class="container">
+        <div class="carousel-caption">
+          <h1> Maintain Your Children's Growth Charts Online </h1>
+          
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <img src="images/216_500.JPG" class="img-responsive">
+      <div class="container">
+        <div class="carousel-caption">
+          <h1> Never Lose Your Records</h1>
+		  <p>Save the record to cloud
+		  </p>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Controls -->
+  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+    <span class="icon-prev"></span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+    <span class="icon-next"></span>
+  </a>  
+</div>
+<!-- /.carousel -->
+
+    
+ 
+
+<!-- list  -->
+<div class="container ">
+	<div class="row">
+        <div class="col-sm-3 col-md-3">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+							
+							<i class="fa fa-child"></i> Infant Products</a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                         <a href="#"> Baby & Toddler Toys </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         <a href="#"> Bathing & Skin Care </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                          <a href="#"> Car Seats & Accessories </a>
+                                    </td>
+                                </tr>
+								 <tr>
+                                    <td>
+                                         <a href="#"> Diapering </a>
+                                    </td>
+                                </tr>
+								 <tr>
+                                    <td>
+                                        <a href="#"> Feeding </a>
+                                    </td>
+                                </tr>
+								 <tr>
+                                    <td>
+                                        <a href="#"> Gear </a>
+                                    </td>
+                                </tr>
+								 <tr>
+                                    <td>
+                                        <a href="#"> Gifts  </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         <a href="#"> Health & Baby Care </a> 
+                                        <span class="badge">42</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+ 				<div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a   href="services.php"> <i class="fa fa-certificate"></i>  Services & Supplies </a>
+                        </h4>
+                    </div>                    
+                </div>
+
+				<div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a   href="literature.php"><i class="fa fa-book"></i>  Literature </a>
+                        </h4>
+                    </div>                    
+                </div>
+				
+				<div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a   href="purchase.php"><i class="fa fa-credit-card"></i> Purchase and Pay </a>
+                        </h4>
+                    </div>                    
+                </div>
+				
+				<div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a   href="business.php"><i class="fa fa-globe"></i>  Business </a>
+                        </h4>
+                    </div>                    
+                </div>
+									
+				<div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a   href="account.php"><i class="fa fa-user"></i> My Account </a>
+                        </h4>
+                    </div>                    
+                </div>
+				
+				<div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a   href="contact.php"><i class="fa fa-phone"></i>  Contact </a>
+                        </h4>
+                    </div>                    
+                </div>
+				                
+            </div>
+        </div>
+        
+<!-- form -->
+	<div class= "right-side">
+	 <div class="col-lg-6">     
+	  	<div class="container" id = 'right'>     
+        		
+			<div class="row">
+				<div class="page-header col-lg-8">
+				  <h1> Growth Charts for Infants <small> (birth to 36 months)</small></h1>
+				  
+ 				</div>
+			</div>
+
+
+	<form class="form-horizontal" id = 'sss'>
+
+		<div class="form-group">
+			<label for="inputUnit" class="col-sm-2 control-label">Unit</label>
+			 <div class="col-sm-5" >
+			   <div class="radio">
+				  <label>
+					<input type="radio" name="unitRadios" id="unit_usstandard" value="1" checked/>
+					US/Standard (pounds, inches) 
+				  </label>
+				</div>
+				<div class="radio">
+				  <label>
+					<input type="radio" name="unitRadios" id="unit_metric" value="2" />
+					Metric (kilograms, centimeter)
+				  </label>
+				</div>		
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="inputName" class="col-sm-2 control-label">Name</label>
+			<div class="col-sm-4 form-inline">
+			  <input type="text" size="20"  class="form-control" id="name" placeholder="Name">
+			</div>
+		</div>
+
+		<div class="form-group" >
+			<label for="inputGender" class="col-sm-2 control-label">Gender</label>
+			<div class="col-sm-6" >
+				<div class="radio">
+				  <label>
+					<input type="radio" name="genderRadios" value="1" required   >
+					Boy
+				  </label>
+				</div>
+			<div class="radio">
+			  <label>
+				<input type="radio" name="genderRadios" value="2" required >
+				Girl
+			  </label>
+			</div>		
+		</div>
+		</div>
+
+		<div class="form-group">
+		<label for="inputBirthday" class="col-sm-2 control-label">Birthday</label>
+		<div id="sandbox-container">        
+    <div class="col-sm-4 form-inline" id="datepicker">
+        <input type="text" class="input-sm form-control" name="birthday" id = 'birthday'/>
+    </div>
+</div>
+		</div>
+	
+  
+		<div id='unitus'> 
+		 <div class="form-group">
+			<label  class="col-sm-2 control-label">Weight</label>
+			<div class="col-sm-6  ">
+				<div class="col-sm-6 input-group ">
+					  <input type="number" class="form-control" id="weightlbs" size="6" placeholder="lbs"  min="3" max="100" step="0.1"  > 
+					  <span class="input-group-addon"> lbs </span>	 
+		 
+					  <input type="number" class="form-control" id="weightounce" size="6" placeholder="ounce"  min="0" max="15"   > 
+					  <span class="input-group-addon"> ounce </span>	  
+				</div>   		
+			 </div>     
+			  
+		  </div>
+
+		 <div class="form-group">
+			<label for="name" class="col-sm-2 control-label">Length </label>
+			<div class="col-sm-6  ">
+			<div class="col-sm-6 input-group">
+			  <input type="number" class="form-control" id="statureinch" placeholder="Length"  min="10" max="100" step="0.1"  > 
+			  <span class="input-group-addon"> inch </span>	 
+			</div>
+			</div>
+		  </div>
+		 
+		  <div class="form-group">
+			<label for="hc" class="col-sm-2 control-label">Head Circumference </label>
+			<div class="col-sm-6  ">
+			<div class="col-sm-6 input-group">
+			  <input type="number" class="form-control" id="hcinch" placeholder="Head Circumference"  min="3" max="100" step="0.1"   >
+			  <span class="input-group-addon"> inch </span>	 
+			</div>
+			</div>
+		  </div>
+		</div>  
+
+
+		<div id='unitmetric'> 
+		 <div class="form-group">
+			<label  class="col-sm-2 control-label">Weight</label>
+			<div class="col-sm-6  ">
+				<div class="col-sm-6 input-group ">
+					  <input type="number" class="form-control" id="weightkg" size="6" placeholder="kg"  min="1" max="100" step="0.1"  > 
+					  <span class="input-group-addon"> kg </span>	  
+				</div>   		
+			 </div>     
+			  
+		  </div>
+
+		 <div class="form-group">
+			<label for="stature" class="col-sm-2 control-label">Length </label>
+			<div class="col-sm-6  ">
+			<div class="col-sm-6 input-group">
+			  <input type="number" class="form-control" id="staturecm" placeholder="Height"  min="40" max="250" step="1"  > 
+			  <span class="input-group-addon"> centimeter  </span>	 
+			</div>
+			</div>
+		  </div>
+		 
+		  <div class="form-group">
+			<label for="hc" class="col-sm-2 control-label">Head Circumference </label>
+			<div class="col-sm-6  ">
+			<div class="col-sm-6 input-group">
+			  <input type="number" class="form-control" id="hccm" placeholder="Head Circumference"  min="10" max="100" step="0.1"   > 
+			  <span class="input-group-addon"> centimeter  </span>	 
+			</div>
+			</div>
+		  </div>
+		</div>  
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-4 center" >
+			 <button type = 'submit' class="btn btn-primary" id = "toRep"> <i class="fa fa-heart"></i> get chart</button>
+			</div>
+		</div>
+
+	</form> 
+	 
+ 	<div id = "replaced">
+	   </div>
+	</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+
+
+      <!-- FOOTER -->
+       
+ 
+		<div class="container light-black">
+			<div class="row">
+				<div class="col-lg-8">
+					
+					
+				   <p>
+					Copyright  &copy; 2014 OnlineGrowthCharts.com. All rights reserved. 
+					DISCLAIMER: All calculations must be confirmed before use. The authors make no 
+					claims of the accuracy of the information contained herein; and these suggested doses
+					are not a substitute for clinical judgement. Neither OnlineGrowthCharts.com 
+					nor any other party involved in the preparation or publication of this site 
+					shall be liable for any special, consequential, or exemplary damages resulting 
+					in whole or part from any user's use of or reliance upon this material.
+					</p>
+					<p>
+					Our Growth Percentile Calculator is a general educational tool only; 
+					it is not the last word on how your child is growing. This calculator is not a 
+					substitute for having a physician monitor your child's growth during regularly 
+					scheduled examinations. If you have any questions about your child's growth patterns, 
+					please ask your child's doctor.	
+					</p>
+					<p>
+					
+					These percentiles were compiled using the latest growth chart data from the National 
+					Center for Health Statistics, U.S. Public Health Service (released in November 2000).
+					The numbers are based on five health surveys done in the United States between 1963 
+					and 1994. The data takes into account the combined growth patterns of babies from all 
+					races and ethnicities and those who have been breast- and formula-fed.      
+					</p>
+ 						 
+				</div>
+				<div class="col-lg-4 text-right">
+					 
+						<p> </p>
+						<p> </p>
+						<p> </p>
+						<p></p>
+					 
+				</div>
+			</div>
+		</div>
+
+ 
+   </div> <!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+	
+     
+	
+
+
+<script type="text/javascript">
+
+$(function(){
+	// show and hide login window
+	
+	$('#toin').mouseenter(function() {
+	$('#sign').show();
+	});
+	$('#toin').mouseleave(function() {
+	$('#sign').hide();
+	});
+    
+//date choose
+
+$('#birthday').datepicker({
+    format: "mm/dd/yyyy",
+    autoclose: true,
+}).on('changeDate', function (ev) {
+    $(this).datepicker('hide');
+
+});
+
+// calculating age of months
+
+var birthday = [];
+
+
+
+$('#unitmetric').hide();
+
+// switch unit
+	$('input[name=unitRadios]').click(function(){
+	
+	 if($('input[name=unitRadios]:checked').val() == 1){
+		$('#unitus').show();
+		$('#unitmetric').hide();
+	}else{
+		$('#unitus').hide();
+		$('#unitmetric').show();
+	}
+	});
+
+// load the chart
+	$( "#sss" ).submit(function( event ) {
+	var birthday = String($('input[name=birthday]').val());
+//ready to send 
+var formData = [];
+	if($('input[name=unitRadios]:checked').val() == 1){
+	    formData = {
+	    'ktype' : parseFloat($('input[name=unitRadios]:checked').val()),
+            'birthday'    :  birthday,
+            'gender'             : parseFloat($('input[name=genderRadios]:checked').val()),
+	    'weight'             : parseFloat($('#weightlbs').val()),
+		'weightounce'			: parseFloat($('#weightounce').val()),
+	    'stature'             : parseFloat($('#statureinch').val()),
+	    'hc'             : parseFloat($('#hcinch').val())
+        };
+		}else{
+		 formData = {
+	    'ktype' : parseFloat($('input[name=unitRadios]:checked').val()),
+            'birthday'    :  birthday,
+            'gender'             : parseFloat($('input[name=genderRadios]:checked').val()),
+	    'weight'             : parseFloat($('#weightkg').val()),
+		'weightounce'			: 0,
+	    'stature'             : parseFloat($('#staturecm').val()),
+	    'hc'             : parseFloat($('#hccm').val())
+        };
+		
+		
+		
+		
+		
+		}
+		
+		
+		
+//send data and load chart
+	    $.ajax({
+            type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
+            url         : 'saveInfo.php', // the url where we want to POST
+            data        : formData, // our data object
+           success : function(data){
+		 
+		  localStorage.setItem("formData", JSON.stringify(formData));
+		  //localStorage.setItem("data", JSON.stringify(data));
+		  $('#replaced').load('../view.html');
+		   }
+        });
+          
+        // stop the form from submitting the normal way and refreshing the page
+	event.preventDefault();
+
+});
+});
+
+
+//setCookie
+	function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+	//getCookie
+	function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+}
+	function login(){
+	  
+	 if(getCookie("user")){
+	  $('#toin').hide();
+      $('#profile').show();
+	  $('#profile').empty();
+        $('#profile').append(
+            $('<img src=\"' + getCookie("url") + '\">'));
+        $('#profile').append(
+            $('<span>Hello ' + getCookie("displayName") + '</span>'));
+	 
+	 }
+	
+	}
+login();
+//oauth2.0
+
+var helper = (function() {
+  var BASE_API_PATH = 'plus/v1/';
+
+  return {
+    /**
+     * Hides the sign in button and starts the post-authorization operations.
+     *
+     * @param {Object} authResult An Object which contains the access token and
+     *   other authentication information.
+     */
+    onSignInCallback: function(authResult) {
+      gapi.client.load('plus','v1').then(function() {
+        if (authResult['access_token']) {
+	   helper.profile();
+        } 
+        console.log('authResult', authResult);
+      });
+    },
+
+    /**
+     * Calls the OAuth2 endpoint to disconnect the app for the user.
+     */
+    disconnect: function() {
+	$('#profile').hide();
+          $('#toin').show();
+		  document.cookie = "displayName=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		  document.cookie = "url=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		  document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		   $.ajax({
+			type : 'GET',
+			url : 'logout.php'
+		   });
+      // Revoke the access token.
+      $.ajax({
+        type: 'GET',
+        url: 'https://accounts.google.com/o/oauth2/revoke?token=' +
+            gapi.auth.getToken().access_token,
+        async: false,
+        contentType: 'application/json',
+        dataType: 'jsonp',
+        success: function(result) {
+          
+		  
+        }
+      });
+    },
+
+    /**
+     * Gets and renders the currently signed in user's profile data.
+     */
+    profile: function(){
+      gapi.client.plus.people.get({
+        'userId': 'me'
+      }).then(function(res) {
+        var profile = res.result;
+		console.log(profile);
+		document.cookie="displayName="+profile.displayName;
+		document.cookie="url="+profile.image.url;
+		document.cookie="user="+profile.emails[0].value;
+		var email = profile.emails[0].value;
+        login();
+		 $.ajax({
+			type : 'GET',
+			url : 'createUser.php?email='+email
+		   });
+      });
+    }
+  };
+})();
+
+/**
+ * jQuery initialization
+ */
+$(document).ready(function() {
+  $('#disconnect').click(helper.disconnect);
+});
+
+/**
+ * Calls the helper method that handles the authentication flow.
+ *
+ * @param {Object} authResult An Object which contains the access token and
+ *   other authentication information.
+ */
+function onSignInCallback(authResult) {
+  helper.onSignInCallback(authResult);
+}
+
+</script>
+  </body>
+</html>

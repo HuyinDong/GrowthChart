@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+	
+    <title>Off Canvas Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./bootstrap-3.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="offcanvas.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="./bootstrap-3.1.1/dist/js/bootstrap.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="offcanvas.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+ <form class="navbar-form " method = "GET">
+            <input type="text" class="form-control" placeholder="Codes" name = 'code'>
+	    <input type="submit" value = 'Search' name = 'search'>
+          </form>
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+    </div><!-- /.navbar -->
+
+    <div class="container">
+
+      <div class="row row-offcanvas row-offcanvas-right">
+
+        <div class="col-xs-12 col-sm-12">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+          </p>
+	  <div class = "col-sm-8">
+          <div class="jumbotron">
+           <div id="chart"></div>
+          </div>
+          </div>
+	 <div class = "col-sm-4">
+
+		<table class = 'table table-bordered'>
+		<caption id = 'stockName'></caption>
+		<tr>
+			<td id = 'sell5'>卖5:&nbsp;&nbsp;</td><td id = 'td_open'>今日开盘价:&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td id = 'sell4'>卖4:&nbsp;&nbsp;</td><td id = 'yd_close'>昨日收盘价:&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td id = 'sell3'>卖3:&nbsp;&nbsp;</td><td id = 'cr_price'>当前价格:&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td id = 'sell2'>卖2:&nbsp;&nbsp;</td><td id = 'highest'>今日最高价:&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td id = 'sell1'>卖1:&nbsp;&nbsp;</td><td id = 'total'>成交金额:&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td id = 'buy1'>买1:&nbsp;&nbsp;</td><td id = 'lowest'>今日最低价:&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td id = 'buy2'>买2:&nbsp;&nbsp;</td><td id = 'numbers'>成交股数:&nbsp;&nbsp;</td>
+		</tr>
+<tr>
+			<td id = 'buy3'>买3:&nbsp;&nbsp;</td><td id = 'per'>涨跌幅:&nbsp;&nbsp;</td>
+		</tr>
+<tr>
+			<td id = 'buy4'>买4:&nbsp;&nbsp;</td>
+		</tr>
+<tr>
+			<td id = 'buy5'>买5:&nbsp;&nbsp;</td>
+		</tr>
+		</table>
+
+	 </div>
+        </div><!--/span-->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>&copy; Company 2014</p>
+      </footer>
+
+    </div><!--/.container-->
+<?php
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
+if($_GET['search']){
+	$code = $_GET['code'];
+	$str = substr($code,0,1);
+	
+	if($str == 6){
+	$code = "sh".$code;
+	
+	}else if($str ==0 || $str ==3){
+	$code = "sz".$code;
+	}else{
+	$code = null;
+	}
+
+echo "		<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
+		   <script src='./bootstrap-3.1.1/dist/js/bootstrap.min.js'></script>
+    <script src='offcanvas.js'></script>
+		<script type='text/javascript' src='http://hq.sinajs.cn/list=".$code."' charset='gb2312'>
+		</script>
+		<script type='text/javascript'>	
+		
+		var elements=hq_str_".$code.".split(',');
+		$('#stockName').text(elements[0]);
+		$('#td_open').append(elements[1]);
+		$('#yd_close').append(elements[2]);
+		$('#cr_price').append(elements[3]);
+		$('#highest').append(elements[4]);
+		$('#lowest').append(elements[5]);
+		$('#numbers').append(elements[8]);
+		$('#total').append(Math.round(elements[9]/10000)+'万');
+		$('#buy1').append(elements[11]+' '+Math.round(elements[10]/100));
+		$('#buy2').append(elements[13]+' '+Math.round(elements[12]/100));
+		$('#buy3').append(elements[15]+' '+Math.round(elements[14]/100));
+		$('#buy4').append(elements[17]+' '+Math.round(elements[16]/100));
+		$('#buy5').append(elements[19]+' '+Math.round(elements[18]/100));
+		$('#sell1').append(elements[21]+' '+Math.round(elements[20]/100));
+		$('#sell2').append(elements[23]+' '+Math.round(elements[22]/100));
+		$('#sell3').append(elements[25]+' '+Math.round(elements[24]/100));
+		$('#sell4').append(elements[27]+' '+Math.round(elements[26]/100));
+		$('#sell5').append(elements[29]+' '+Math.round(elements[28]/100));
+		$('#per').append(((elements[3]-elements[2])*100/elements[2]).toPrecision(3)+'%');
+		</script>";
+
+}
+
+?>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script>
+$(function () {
+    $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=aapl-ohlcv.json&callback=?', function (data) {
+
+        // split the data set into ohlc and volume
+        var ohlc = [],
+            volume = [],
+            dataLength = data.length,
+            // set the allowed units for data grouping
+            groupingUnits = [[
+                'week',                         // unit name
+                [1]                             // allowed multiples
+            ], [
+                'month',
+                [1, 2, 3, 4, 6]
+            ]],
+
+            i = 0;
+
+        for (i; i < dataLength; i += 1) {
+            ohlc.push([
+                data[i][0], // the date
+                data[i][1], // open
+                data[i][2], // high
+                data[i][3], // low
+                data[i][4] // close
+            ]);
+
+            volume.push([
+                data[i][0], // the date
+                data[i][5] // the volume
+            ]);
+        }
+
+
+        // create the chart
+        $('#container').highcharts('StockChart', {
+
+            rangeSelector: {
+                selected: 1
+            },
+
+            title: {
+                text: 'AAPL Historical'
+            },
+
+            yAxis: [{
+                labels: {
+                    align: 'right',
+                    x: -3
+                },
+                title: {
+                    text: 'OHLC'
+                },
+                height: '60%',
+                lineWidth: 2
+            }, {
+                labels: {
+                    align: 'right',
+                    x: -3
+                },
+                title: {
+                    text: 'Volume'
+                },
+                top: '65%',
+                height: '35%',
+                offset: 0,
+                lineWidth: 2
+            }],
+
+            series: [{
+                type: 'candlestick',
+                name: 'AAPL',
+                data: ohlc,
+                dataGrouping: {
+                    units: groupingUnits
+                }
+            }, {
+                type: 'column',
+                name: 'Volume',
+                data: volume,
+                yAxis: 1,
+                dataGrouping: {
+                    units: groupingUnits
+                }
+            }]
+        });
+    });
+});
+//  http://table.finance.yahoo.com/table.csv?s=600000.ss
+	</script>
+  </body>
+</html>

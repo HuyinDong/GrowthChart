@@ -1,0 +1,836 @@
+<!DOCTYPE>
+<html>
+<head>
+
+</head>
+<body>
+<div id="container" style="width: 800px; height: 800px;">
+<!--<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+     /  <script src="bootstrap-3.1.1/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/highcharts.js"></script>-->
+<script>
+//####################height for age########################
+
+
+
+$(function(){
+
+var formData = localStorage.getItem('formData');
+	//var data = localStorage.getItem('data');
+	eval('var objFormData='+formData);
+	//eval('var objData='+data);
+	var ktype = objFormData.ktype;
+	var birthday = objFormData.birthday;
+	var gender = objFormData.gender;
+	var weight = [];
+	var stature = objFormData.stature;
+	var hc = objFormData.hc;
+	var age = [];
+	function dateCal(){
+	
+var temp = birthday.split('/');
+
+var date = new Date();
+if(date.getMonth()>=temp[0]){
+age = (date.getFullYear()-temp[2])*12+date.getMonth()+1-temp[0];
+}else{
+age = (date.getFullYear()-1-temp[2])*12+12+date.getMonth()+1-temp[0];
+}
+}
+	dateCal();
+
+	if(ktype === 1){
+	weight = objFormData.weight+objFormData.weightonce/16;
+	weight = weight/2.2;
+	stature = objFormData.stature*2.54;
+	hc = objFormData.hc*2.54;
+	}else{
+	weight = objFormData.weight;
+	}
+	var infoData = {
+	'ktype' :   ktype, 
+	'age' :		age,	
+	'gender' :  gender,
+	'weight' : 	weight,
+	'stature' :	stature,
+	'hc' :		hc
+	};
+	
+	
+	 $.ajax({
+            type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
+            url         : 'http://webservices.onlinegrowthcharts.com/gc', // the url where we want to POST
+            data        : infoData, // our data object
+           success : function(data){
+				var obj = JSON.parse(data);
+				console.log(obj);
+				 $.ajax({
+            type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
+            url         : 'saveRecord.php', // the url where we want to POST
+            data        : obj, 
+			success : function(result){
+				}
+				});
+		   }
+        });
+	
+
+	var p3 = [];
+	var p5 = [];
+	var p10 = [];
+	var p25 = [];
+	var p50 = [];
+	var p75 = [];
+	var p85 = [];
+	var p90 = [];
+	var p95 = [];
+	var p97 = [];
+	var link = [];
+	var cal = [];
+	
+	if(gender===1){
+	link = 'data/lenageinf.csv';
+	}else{
+	link = 'data/lenageinf_girl.csv';
+	}
+	cal.push([parseFloat(age),parseFloat(stature)]);
+	$.get(link,function(data){
+	
+	 var lines = data.split('\n');
+	var i = 1;
+	for(i; i<lines.length-1; i++){
+		var items = lines[i].split(',');
+	
+		p3.push(parseFloat(items[5])	);		//p3
+		p5.push(parseFloat(items[6]));		//p5
+		p10.push(parseFloat(items[7]));		//p10
+		p25.push(parseFloat(items[8]));		//p25
+		p50.push(parseFloat(items[9]));		//p50
+		p75.push(parseFloat(items[10]));		//p75
+		p90.push(parseFloat(items[11]));		//p90
+		p95.push(parseFloat(items[12]));		//p95
+		p97.push(parseFloat(items[13]));		//p97
+		
+	}
+  	
+ $('#container').highcharts({
+        title: {
+            text: 'Growth Chart',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Length-for-age charts, birth to 36 months',
+            x: -20
+        },
+	plotOptions: {
+            series: {
+                marker: {
+                enabled: false
+            }
+            }
+        },
+        tooltip: {
+         formatter : function(){
+		return 'Length:<b>'+this.y+'</b>, Age:<b>'+this.x+'</b>';
+	}   
+        },
+	yAxis : [{
+	title : {
+	text : 'Length	'
+	},
+	tickInterval : 2,
+	minorTickInterval: 1,
+	labels: {
+		
+                formatter: function () {
+                    return this.value+' cm';
+                }
+            }
+
+	},
+	{
+	linkedTo : 0,
+	opposite : true,
+	title : {
+	text : 'Length'
+	},
+	labels: {
+		
+                formatter: function () {
+                    return Math.round(this.value/2.54)+' inches';
+                }
+            }
+	}
+	],
+	xAxis : {
+	title : {
+	text : 'Age : Months'
+	},
+	tickInterval : 4,
+	minorTickInterval : 2,
+	},
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+	
+        series: [
+	{
+	    name : 'p3',
+	    data : p3	
+	},
+	{
+	    name : 'p5',
+	    data : p5	
+	},
+	{
+	    name : 'p10',
+	    data : p10	
+	},
+	{
+	    name : 'p25',
+	    data : p25	
+	},
+	{
+	    name : 'p50',
+	    data : p50	
+	},
+	{
+	    name : 'p75',
+	    data : p75	
+	},
+	{
+	    name : 'p90',
+	    data : p90	
+	},
+	{
+	    name : 'p95',
+	    data : p95	
+	},
+	{
+	    name : 'p97',
+	    data : p97	
+	},
+	{
+            type: 'scatter',
+            name: 'Your baby',
+            data: cal,
+            marker: {
+		  symbol : "circle",
+		 enabled: true,
+                radius: 6
+            }
+	}
+	]
+    });
+	});
+});
+</script>
+</div>
+
+
+<div id="container1" style="width: 800px; height: 800px;">
+<script>
+$(function(){
+
+var formData = localStorage.getItem('formData');
+	//var data = localStorage.getItem('data');
+	eval('var objFormData='+formData);
+	//eval('var objData='+data);
+	var ktype = objFormData.ktype;
+	var birthday = objFormData.birthday;
+	var gender = objFormData.gender;
+	var weight = [];
+	var stature = objFormData.stature;
+	var hc = objFormData.hc;
+	var age = [];
+	function dateCal(){
+	
+var temp = birthday.split('/');
+
+var date = new Date();
+if(date.getMonth()>=temp[0]){
+age = (date.getFullYear()-temp[2])*12+date.getMonth()+1-temp[0];
+}else{
+age = (date.getFullYear()-1-temp[2])*12+12+date.getMonth()+1-temp[0];
+}
+}
+	dateCal();
+
+	if(ktype === 1){
+	weight = objFormData.weight+objFormData.weightonce/16;
+	weight = weight/2.2;
+	stature = objFormData.stature*2.54;
+	hc = objFormData.hc*2.54;
+	}else{
+	weight = objFormData.weight;
+	}
+
+	var p3 = [];
+	var p5 = [];
+	var p10 = [];
+	var p25 = [];
+	var p50 = [];
+	var p75 = [];
+	var p85 = [];
+	var p90 = [];
+	var p95 = [];
+	var p97 = [];
+	var link = [];
+	var cal = [];
+	
+	if(gender===1){
+	link = 'data/wtageinf.csv';
+	}else{
+	link = 'data/wtageinf_girl.csv';
+	}
+	cal.push([parseFloat(age),parseFloat(weight)]);
+	$.get(link,function(data){
+	 var lines = data.split('\n');
+	var i = 1;
+	for(i; i<lines.length-1; i++){
+		var items = lines[i].split(',');
+	
+		p3.push(parseFloat(items[5])	);		//p3
+		p5.push(parseFloat(items[6]));		//p5
+		p10.push(parseFloat(items[7]));		//p10
+		p25.push(parseFloat(items[8]));		//p25
+		p50.push(parseFloat(items[9]));		//p50
+		p75.push(parseFloat(items[10]));		//p75
+
+		p90.push(parseFloat(items[11]));		//p90
+		p95.push(parseFloat(items[12]));		//p95
+		p97.push(parseFloat(items[13]));		//p97
+		
+	}
+
+  	//cal.push([parseFloat(age),parseFloat(bmi)]);
+var t = $('#container1').highcharts({
+        title: {
+            text: 'Growth Chart',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Weight-for-age charts, birth to 36 months',
+            x: -20
+        },
+	plotOptions: {
+            series: {
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        tooltip: {
+         formatter : function(){
+		return 'Weight:<b>'+this.y+'</b>, Age:<b>'+this.x+'</b>';
+	}   
+        },
+	yAxis : [{
+	title : {
+	text : 'Weight	'
+	},
+	tickInterval : 2,
+	minorTickInterval: 1,
+	labels: {
+		
+                formatter: function () {
+                    return this.value+' kg';
+                }
+            }
+
+	},
+	{
+	linkedTo : 0,
+	opposite : true,
+	title : {
+	text : 'Weight'
+	},
+	labels: {
+		
+                formatter: function () {
+                    return Math.round(this.value*2.2)+' lbs';
+                }
+            }
+	}
+	],
+	xAxis : {
+	title : {
+	text : 'Age : Months'
+	},
+	tickInterval : 4,
+	minorTickInterval : 2,
+	},
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+	
+        series: [
+	{
+	    name : 'p3',
+	    data : p3	
+	},
+	{
+	    name : 'p5',
+	    data : p5	
+	},
+	{
+	    name : 'p10',
+	    data : p10	
+	},
+	{
+	    name : 'p25',
+	    data : p25	
+	},
+	{
+	    name : 'p50',
+	    data : p50	
+	},
+	{
+	    name : 'p75',
+	    data : p75	
+	},
+	{
+	    name : 'p90',
+	    data : p90	
+	},
+	{
+	    name : 'p95',
+	    data : p95	
+	},
+	{
+	    name : 'p97',
+	    data : p97	
+	},
+	{
+            type: 'scatter',
+            name: 'Your baby',
+            data: cal,
+            marker: {
+		  symbol : "circle",
+		 enabled: true,
+                radius: 6
+            }
+	}
+	]
+    });
+	});
+
+});
+</script>
+</div>
+<div id="container2" style="width: 800px; height: 800px;">
+<script>
+$(function(){
+
+var formData = localStorage.getItem('formData');
+	//var data = localStorage.getItem('data');
+	eval('var objFormData='+formData);
+	//eval('var objData='+data);
+	var ktype = objFormData.ktype;
+	var birthday = objFormData.birthday;
+	var gender = objFormData.gender;
+	var weight = [];
+	var stature = objFormData.stature;
+	var hc = objFormData.hc;
+	var age = [];
+	function dateCal(){
+	
+var temp = birthday.split('/');
+
+var date = new Date();
+if(date.getMonth()>=temp[0]){
+age = (date.getFullYear()-temp[2])*12+date.getMonth()+1-temp[0];
+}else{
+age = (date.getFullYear()-1-temp[2])*12+12+date.getMonth()+1-temp[0];
+}
+}
+	dateCal();
+
+	if(ktype === 1){
+	weight = objFormData.weight+objFormData.weightonce/16;
+	weight = weight/2.2;
+	stature = objFormData.stature*2.54;
+	hc = objFormData.hc*2.54;
+	}else{
+	weight = objFormData.weight;
+	}
+
+	var p3 = [];
+	var p5 = [];
+	var p10 = [];
+	var p25 = [];
+	var p50 = [];
+	var p75 = [];
+	var p85 = [];
+	var p90 = [];
+	var p95 = [];
+	var p97 = [];
+	var cal = [];
+	if(gender===1){
+	link = 'data/hcageinf.csv';
+	}else{
+	link = 'data/hcageinf_girl.csv';
+	}
+	cal.push([parseFloat(age),parseFloat(hc)]);
+	$.get(link,function(data){
+	 var lines = data.split('\n');
+	var i = 1;
+	for(i; i<lines.length-1; i++){
+		var items = lines[i].split(',');
+	
+		p3.push(parseFloat(items[5])	);		//p3
+		p5.push(parseFloat(items[6]));		//p5
+		p10.push(parseFloat(items[7]));		//p10
+		p25.push(parseFloat(items[8]));		//p25
+		p50.push(parseFloat(items[9]));		//p50
+		p75.push(parseFloat(items[10]));		//p75
+		
+		p90.push(parseFloat(items[11]));		//p90
+		p95.push(parseFloat(items[12]));		//p95
+		p97.push(parseFloat(items[13]));		//p97
+		
+	}
+
+  	//cal.push([parseFloat(age),parseFloat(bmi)]);
+var t = $('#container2').highcharts({
+        title: {
+            text: 'Growth Chart',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Head circumference-for-age charts, birth to 36 months',
+            x: -20
+        },
+	plotOptions: {
+            series: {
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        tooltip: {
+         formatter : function(){
+		return 'Head circumference:<b>'+this.y+'</b>, Age:<b>'+this.x+'</b>';
+	}   
+        },
+	yAxis : [{
+	title : {
+	text : 'Head circumference'
+	},
+	tickInterval : 2,
+	minorTickInterval: 1,
+	labels: {
+		
+                formatter: function () {
+                    return this.value+' cm';
+                }
+            }
+
+	},
+	{
+	linkedTo : 0,
+	opposite : true,
+	title : {
+	text : 'Head circumference'
+	},
+	labels: {
+		
+                formatter: function () {
+                    return Math.round(this.value/2.54)+' inches';
+                }
+            }
+	}
+	],
+	xAxis : [{
+	title : {
+	text : 'Age : Months'
+	},
+	tickInterval : 4,
+	minorTickInterval : 2,
+	labels: {
+		
+                formatter: function () {
+                    return this.value;
+                }
+            }
+	}
+	],
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+	
+        series: [
+	{
+	    name : 'p3',
+	    data : p3	
+	},
+	{
+	    name : 'p5',
+	    data : p5	
+	},
+	{
+	    name : 'p10',
+	    data : p10	
+	},
+	{
+	    name : 'p25',
+	    data : p25	
+	},
+	{
+	    name : 'p50',
+	    data : p50	
+	},
+	{
+	    name : 'p75',
+	    data : p75	
+	},
+	{
+	    name : 'p90',
+	    data : p90	
+	},
+	{
+	    name : 'p95',
+	    data : p95	
+	},
+	{
+	    name : 'p97',
+	    data : p97	
+	},
+	{
+            type: 'scatter',
+            name: 'Your baby',
+            data: cal,
+            marker: {
+		  symbol : "circle",
+		 enabled: true,
+                radius: 6
+            }
+	}
+	]
+    });
+	});
+
+});
+</script>
+</div>
+<div id="container3" style="width: 800px; height: 800px;">
+<script>
+$(function(){
+
+var formData = localStorage.getItem('formData');
+	//var data = localStorage.getItem('data');
+	eval('var objFormData='+formData);
+	//eval('var objData='+data);
+	var ktype = objFormData.ktype;
+	var birthday = objFormData.birthday;
+	var gender = objFormData.gender;
+	var weight = [];
+	var stature = objFormData.stature;
+	var hc = objFormData.hc;
+	var age = [];
+	function dateCal(){
+	
+var temp = birthday.split('/');
+
+var date = new Date();
+if(date.getMonth()>=temp[0]){
+age = (date.getFullYear()-temp[2])*12+date.getMonth()+1-temp[0];
+}else{
+age = (date.getFullYear()-1-temp[2])*12+12+date.getMonth()+1-temp[0];
+}
+}
+	dateCal();
+
+	if(ktype === 1){
+	weight = objFormData.weight+objFormData.weightonce/16;
+	weight = weight/2.2;
+	stature = objFormData.stature*2.54;
+	hc = objFormData.hc*2.54;
+	}else{
+	weight = objFormData.weight;
+	}
+
+	var p3 = [];
+	var p5 = [];
+	var p10 = [];
+	var p25 = [];
+	var p50 = [];
+	var p75 = [];
+	var p85 = [];
+	var p90 = [];
+	var p95 = [];
+	var p97 = [];
+	var link = [];
+	var cal = [];
+	if(gender===1){
+	link = 'data/wtleninf.csv';
+	}else{
+	link = 'data/wtleninf_girl.csv';
+	}
+	cal.push([parseFloat(stature),parseFloat(weight)]);
+	$.get(link,function(data){
+	 var lines = data.split('\n');
+	var i = 1;
+	for(i; i<lines.length-1; i++){
+		var items = lines[i].split(',');
+	
+		p3.push([parseFloat(items[1]),parseFloat(items[5])]);		//p3
+		p5.push([parseFloat(items[1]),parseFloat(items[6])]);		//p5
+		p10.push([parseFloat(items[1]),parseFloat(items[7])]);		//p10
+		p25.push([parseFloat(items[1]),parseFloat(items[8])]);		//p25
+		p50.push([parseFloat(items[1]),parseFloat(items[9])]);		//p50
+		p75.push([parseFloat(items[1]),parseFloat(items[10])]);		//p75
+		p90.push([parseFloat(items[1]),parseFloat(items[11])]);		//p90
+		p95.push([parseFloat(items[1]),parseFloat(items[12])]);		//p95
+		p97.push([parseFloat(items[1]),parseFloat(items[13])]);		//p97
+		
+	}
+	
+  	//cal.push([parseFloat(age),parseFloat(bmi)]);
+var t = $('#container3').highcharts({
+        title: {
+            text: 'Growth Chart',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Weight-for-Length charts, birth to 36 months',
+            x: -20
+        },
+	plotOptions: {
+            series: {
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        tooltip: {
+         formatter : function(){
+		return 'Weight:<b>'+this.y+'</b>, Length:<b>'+this.x+'</b>';
+	}   
+        },
+	yAxis : [{
+	title : {
+	text : 'Weight	'
+	},
+	tickInterval : 2,
+	minorTickInterval: 1,
+	labels: {
+		
+                formatter: function () {
+                    return this.value+' kg';
+                }
+            }
+
+	},
+	{
+	linkedTo : 0,
+	opposite : true,
+	title : {
+	text : 'Weight'
+	},
+	labels: {
+		
+                formatter: function () {
+                    return Math.round(this.value*2.2)+' lbs';
+                }
+            }
+	}
+	],
+	xAxis : [{
+	title : {
+	text : 'Length'
+	},
+	tickInterval : 4,
+	minorTickInterval : 2,
+	labels: {
+		
+                formatter: function () {
+                    return Math.round(this.value)+' cm';
+                }
+            }
+	},
+	,
+	{
+	linkedTo : 0,
+	opposite : true,
+	labels: {
+		
+                formatter: function () {
+                    return Math.round(this.value/2.54)+' inches';
+                }
+            }
+	}
+	],
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+	
+        series: [
+	{
+	    name : 'p3',
+	    data : p3	
+	},
+	{
+	    name : 'p5',
+	    data : p5	
+	},
+	{
+	    name : 'p10',
+	    data : p10	
+	},
+	{
+	    name : 'p25',
+	    data : p25	
+	},
+	{
+	    name : 'p50',
+	    data : p50	
+	},
+	{
+	    name : 'p75',
+	    data : p75	
+	},
+	{
+	    name : 'p90',
+	    data : p90	
+	},
+	{
+	    name : 'p95',
+	    data : p95	
+	},
+	{
+	    name : 'p97',
+	    data : p97	
+	},
+	{
+            type: 'scatter',
+            name: 'Your baby',
+            data: cal,
+            marker: {
+		  symbol : "circle",
+		 enabled: true,
+                radius: 6
+            }
+	}
+	]
+    });
+	});
+
+});
+</script>
+</div>
+
+</body>
+</html>

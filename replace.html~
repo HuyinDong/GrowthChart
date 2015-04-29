@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Online Growth Charts</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap-3.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+		
+		<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+	    <script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
+ </head>	
+<body>
+
+
+<div class="form-group">
+			<label for="inputUnit" class="col-sm-2 control-label">Unit</label>
+			 <div class="col-sm-5" >
+			   <div class="radio">
+				  <label>
+					<input type="radio" name="unitRadios" id="unit_usstandard" value='US' checked/>
+					US/Standard (pounds, inches) 
+				  </label>
+				</div>
+				<div class="radio">
+				  <label>
+					<input type="radio" name="unitRadios" id="unit_metric" value='Metric' />
+					Metric (kilograms, centimeter)
+				  </label>
+				</div>		
+			</div>
+		</div>
+
+
+<div class= "right-side">
+	 <div class="col-lg-6">     
+	  	<div class="container">     
+
+ 	<div id = "replaced">
+
+
+<div id='unitus'> 
+		 <div class="form-group">
+			<label  class="col-sm-2 control-label">Weight</label>
+			<div class="col-sm-6  ">
+				<div class="col-sm-6 input-group ">
+					  <input type="number" class="form-control" id="weightlbs" size="6" placeholder="lbs"  min="3" max="100" step="0.1"  > 
+					  <span class="input-group-addon"> lbs </span>	 
+		 
+					  <input type="number" class="form-control" id="weightounce" size="6" placeholder="ounce"  min="0" max="15"   > 
+					  <span class="input-group-addon"> ounce </span>	  
+				</div>   		
+			 </div>     
+			  
+		  </div>
+
+		 <div class="form-group">
+			<label for="name" class="col-sm-2 control-label">Length </label>
+			<div class="col-sm-6  ">
+			<div class="col-sm-6 input-group">
+			  <input type="number" class="form-control" id="name" placeholder="Height"  min="10" max="100" step="0.1"  > 
+			  <span class="input-group-addon"> inch </span>	 
+			</div>
+			</div>
+		  </div>
+		 
+		  <div class="form-group">
+			<label for="name" class="col-sm-2 control-label">Head Circumference </label>
+			<div class="col-sm-6  ">
+			<div class="col-sm-6 input-group">
+			  <input type="number" class="form-control" id="headcir" placeholder="Head Circumference"  min="3" max="100" step="0.1"   >
+			  <span class="input-group-addon"> inch </span>	 
+			</div>
+			</div>
+		  </div>
+		</div>  
+
+	<div id='unitmetric'> 
+		 <div class="form-group">
+			<label  class="col-sm-2 control-label">Weight</label>
+			<div class="col-sm-6  ">
+				<div class="col-sm-6 input-group ">
+					  <input type="number" class="form-control" id="weightlbs" size="6" placeholder="kg"  min="1" max="100" step="0.1"  > 
+					  <span class="input-group-addon"> kg </span>	  
+				</div>   		
+			 </div>     
+			  
+		  </div>
+
+		 <div class="form-group">
+			<label for="name" class="col-sm-2 control-label">Length </label>
+			<div class="col-sm-6  ">
+			<div class="col-sm-6 input-group">
+			  <input type="number" class="form-control" id="name" placeholder="Height"  min="40" max="250" step="1"  > 
+			  <span class="input-group-addon"> centimeter  </span>	 
+			</div>
+			</div>
+		  </div>
+		 
+		  <div class="form-group">
+			<label for="name" class="col-sm-2 control-label">Head Circumference </label>
+			<div class="col-sm-6  ">
+			<div class="col-sm-6 input-group">
+			  <input type="number" class="form-control" id="headcir" placeholder="Head Circumference"  min="10" max="100" step="0.1"   > 
+			  <span class="input-group-addon"> centimeter  </span>	 
+			</div>
+			</div>
+		  </div>
+		</div>  
+	   </div>
+	</div>
+</div>
+</div>
+
+   <script src="bootstrap-3.1.1/dist/js/bootstrap.min.js"></script>
+      <script src = "js/bootstrap-datepicker.js"></script>
+    <!-- script src="js/docs.min.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+    <script src="js/my.js"></script -->
+	<script>
+	$(function(){
+	$('input[name=unitRadios]').click(function(){
+	alert($('input[name=unitRadios]:checked').val());
+	
+	});
+});
+	</script>
+  </body>
+</html>
